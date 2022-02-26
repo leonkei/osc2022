@@ -3,9 +3,9 @@ void init_uart(){
     *AUXENB |=1; // enable mini UART, then mini uart register can be accessed.
     *AUX_MU_CNTL_REG = 0; // Disable transmitter and receiver during configuration.
     *AUX_MU_IER_REG = 0;
-    *AUX_MU_LCR_REG = 0;
+    *AUX_MU_LCR_REG = 3;
     *AUX_MU_MCR_REG = 0;
-    *AUX_MU_BAUD = 270;
+    *AUX_MU_BAUD_REG  = 270;
     *AUX_MU_IIR_REG = 6;
     *AUX_MU_CNTL_REG = 3;
 
@@ -41,17 +41,21 @@ void init_uart(){
 
     *GPPUDCLK0 = 0; // remove the clock.
     *AUX_MU_CNTL_REG = 3; // enable tx and rx after configuration.
+
 }
 char read_uart(){
-    while(!AUX_MU_LSR_REG & 0x1){
+    while(!(*AUX_MU_LSR_REG & 0x01)){
         asm volatile("nop");
     }
-
-    return (char)*AUX_MU_IO_REG;
+    char r = (char)*AUX_MU_IO_REG;
+    return r=='\r'?'\n':r;
 }
-void write_uart(char *s){
-    while(*(s++)){
-        while(!AUX_MU_LSR_REG & 0x20) asm volatile("nop");
-        *AUX_MU_IO_REG = *s;
+void writec_uart(char s){
+    while(!(*AUX_MU_LSR_REG & 0x20)) asm volatile("nop");
+    *AUX_MU_IO_REG = s;
+}
+void writes_uart(char *s){
+    while(*s){
+        writec_uart(*s++);
     }
 }

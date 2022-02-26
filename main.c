@@ -1,9 +1,9 @@
 #include"mini_uart.h"
 int main(){
     init_uart();
+    writes_uart("Initialize done.\n");
     while(1){
-        char c = read_uart();
-        write_uart(c);
+        writec_uart(read_uart()); 
     }
     return 0;
 }

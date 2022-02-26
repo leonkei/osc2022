@@ -7,14 +7,15 @@
 #define AUX_MU_LCR_REG      ((volatile unsigned int*)(MMIO_BASE+0x0021504C))
 #define AUX_MU_MCR_REG      ((volatile unsigned int*)(MMIO_BASE+0x00215050))
 #define AUX_MU_LSR_REG      ((volatile unsigned int*)(MMIO_BASE+0x00215054))
-//#define AUX_MU_MSR      ((volatile unsigned int*)(MMIO_BASE+0x00215058))
-//#define AUX_MU_SCRATCH  ((volatile unsigned int*)(MMIO_BASE+0x0021505C))
+#define AUX_MU_MSR_REG       ((volatile unsigned int*)(MMIO_BASE+0x00215058))
+#define AUX_MU_SCRATCH_REG   ((volatile unsigned int*)(MMIO_BASE+0x0021505C))
 #define AUX_MU_CNTL_REG     ((volatile unsigned int*)(MMIO_BASE+0x00215060))
-//#define AUX_MU_STAT     ((volatile unsigned int*)(MMIO_BASE+0x00215064))
-#define AUX_MU_BAUD     ((volatile unsigned int*)(MMIO_BASE+0x00215068))
+#define AUX_MU_STAT_REG      ((volatile unsigned int*)(MMIO_BASE+0x00215064))
+#define AUX_MU_BAUD_REG      ((volatile unsigned int*)(MMIO_BASE+0x00215068))
 void init_uart();
 char read_uart();
-void write_uart();
+void writec_uart(char s);
+void writes_uart(char *s);
 
 #define GPFSEL0         ((volatile unsigned int*)(MMIO_BASE+0x00200000))
 #define GPFSEL1         ((volatile unsigned int*)(MMIO_BASE+0x00200004))
