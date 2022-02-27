@@ -20,10 +20,13 @@ void read_command(){
     writes_uart("# ");
     while(1){
         char c = read_uart();
-        writec_uart(c);
+        
         if(c!='\n' && count<256){
+            writec_uart(c);
             buffer[count++] = c;
         }else{
+            writec_uart('\r');
+            writec_uart(c);
             buffer[count]='\0';
             if(buffer[0] != '\0'){
                 action = cmp_command(buffer);
@@ -37,15 +40,15 @@ void read_command(){
 }
 void handle_command(int action, char *buffer){
     if(action == 1){ // help
-        writes_uart("help       : print this help menu\n");
-        writes_uart("hello      : print Hello World!\n");
-        writes_uart("reboot     : reboot the device\n");
+        writes_uart("help       : print this help menu\r\n");
+        writes_uart("hello      : print Hello World!\r\n");
+        writes_uart("reboot     : reboot the device\r\n");
     }else if(action==2){ // hello
-        writes_uart("Hello World!\n");
+        writes_uart("Hello World!\r\n");
     }else{
         writes_uart("command not found: ");
         writes_uart(buffer);
-        writes_uart("\n");
+        writes_uart("\r\n");
     }
     return;
 }

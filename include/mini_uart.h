@@ -14,7 +14,7 @@
 #define AUX_MU_BAUD_REG      ((volatile unsigned int*)(MMIO_BASE+0x00215068))
 void init_uart();
 char read_uart();
-void writec_uart(char s);
+void writec_uart(unsigned int s);
 void writes_uart(char *s);
 
 #define GPFSEL0         ((volatile unsigned int*)(MMIO_BASE+0x00200000))

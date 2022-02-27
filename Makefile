@@ -5,7 +5,7 @@ ASMS = a
 LINK = linker
 CFLAGS = -Wall -O2 -ffreestanding -nostdinc -nostdlib -nostartfiles
 
-all: clean kernel8.img run
+all: clean kernel8.img #run
 
 %.o: %.S
 	aarch64-linux-gnu-gcc $(CFLAGS) $(INCLUDE) -c $(ASMS).S -o $(ASMS).o
@@ -27,4 +27,4 @@ flash:
 	sudo dd if=kernel8.img of=/dev/sdb
 
 screen:
-	screen /dev/ttyUSB0 115200
+	sudo screen /dev/ttyUSB0 115200

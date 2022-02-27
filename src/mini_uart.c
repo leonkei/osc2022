@@ -16,7 +16,7 @@ void init_uart(){
     tmp_reg = *GPFSEL1; // load the GPIO Function Select Registers SEL1 to tmp_reg.
     tmp_reg &= 0xfffc0fff; // use a mask to make the 12~17 bits(FSEL14 & FSEL15) of the register to 0.
     tmp_reg |= (0b010 << 12) | (0b010 << 15); // to make the 12~14bits and 15~17 bits of the register to b010, takes alternate function 5.
-    
+    *GPFSEL1 = tmp_reg;
     /*  
     1. Write to GPPUD to set the required control signal (i.e. Pull-up or Pull-Down or neither
     to remove the current Pull-up/down)
@@ -44,18 +44,21 @@ void init_uart(){
 
 }
 char read_uart(){
+    char r;
     while(!(*AUX_MU_LSR_REG & 0x01)){
         asm volatile("nop");
     }
-    char r = (char)*AUX_MU_IO_REG;
+    r = (char)(*AUX_MU_IO_REG);
     return r=='\r'?'\n':r;
 }
-void writec_uart(char s){
+void writec_uart(unsigned int s){
     while(!(*AUX_MU_LSR_REG & 0x20)) asm volatile("nop");
     *AUX_MU_IO_REG = s;
 }
 void writes_uart(char *s){
     while(*s){
+        if(*s=='\n')
+            writec_uart('\r');
         writec_uart(*s++);
     }
 }
