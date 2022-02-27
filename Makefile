@@ -22,3 +22,9 @@ clean:
 
 run:
 	qemu-system-aarch64 -M raspi3 -kernel kernel8.img --display none -serial null -serial stdio
+
+flash:
+	sudo dd if=kernel8.img of=/dev/sdb
+
+screen:
+	screen /dev/ttyUSB0 115200
