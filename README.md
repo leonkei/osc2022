@@ -1,6 +1,6 @@
-# Operating Systems Capstone 2022
+# Operating Systems Capstone 2022 Lab1
 
-## Author
+## Info
 
 | Student ID | GitHub account name | Name |
 | ---------- | ------------------- | ---- |
