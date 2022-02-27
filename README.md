@@ -1,5 +1,7 @@
 # Operating Systems Capstone 2022
 
-GitHub account name: leonkei <br>
-Student ID: A102039 <br>
-Name: 林澤基 <br>
+## Author
+
+| Student ID | GitHub account name | Name |
+| ---------- | ------------------- | ---- |
+|`A102039`| `leonkei` | `林澤基` |
