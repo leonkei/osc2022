@@ -6,7 +6,6 @@ int main(){
     while(1){
         //writec_uart(read_uart());
         read_command();
-        //handle_command(c);
     }
     return 0;
 }
