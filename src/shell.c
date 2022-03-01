@@ -33,8 +33,11 @@ void read_command(){
         char c = read_uart();
         
         if(c!='\n' && count<256){
-            writec_uart(c);
-            buffer[count++] = c;
+            if(c>=0 && c<=127){ // avoid substitute character �
+               writec_uart(c);
+                buffer[count++] = c; 
+            }
+            
         }else{
             writec_uart('\r');
             writec_uart(c);

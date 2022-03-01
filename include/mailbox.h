@@ -10,9 +10,7 @@
 #define MBOX_CH_TOUCH   6
 #define MBOX_CH_COUNT   7
 #define MBOX_CH_PROP    8
-extern volatile unsigned int mailbox[36]; //cause problem
+
 void get_board_revision();
 void get_ARM_memory();
 int mailbox_call(volatile unsigned int*,unsigned char);
-
-#define MBOX_REQUEST    0

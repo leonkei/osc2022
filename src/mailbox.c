@@ -28,6 +28,8 @@ Mailbox 0 defines the following channels:
 #define MAILBOX_STATUS     ((volatile unsigned int*)(VIDEOCORE_MBOX+0x18))
 #define MAILBOX_CONFIG     ((volatile unsigned int*)(VIDEOCORE_MBOX+0x1C))
 #define MAILBOX_WRITE      ((volatile unsigned int*)(VIDEOCORE_MBOX+0x20))
+#define MBOX_REQUEST    0
+
 #define MAILBOX_RESPONSE   0x80000000
 #define MAILBOX_FULL       0x80000000
 #define MAILBOX_EMPTY      0x40000000
@@ -36,24 +38,23 @@ Mailbox 0 defines the following channels:
 #define GET_ARM_MEMORY     0x00010005
 
 #define END_TAG            0x00000000
-//volatile unsigned int  __attribute__((aligned(16))) mailbox[36];
 
 int mailbox_call(volatile unsigned int* mailbox,unsigned char ch){
     //unsigned char ch = (unsigned char)MBOX_CH_PROP;
     
      unsigned int r = (unsigned int)(((unsigned long)mailbox) & (~0xF)) | (ch & 0xF);
-    /* wait until we can write to the mailbox */
+    // wait for the mailbox not full.
     do{asm volatile("nop");}while(*MAILBOX_STATUS & MAILBOX_FULL);
 
-    /* write the address of our message to the mailbox with channel identifier */
+    // write the message address(28 bits) and channel number (4bits) to mailbox write register.
     *MAILBOX_WRITE = r;
-    /* now wait for the response */
+
     while(1) {
-        /* is there a response? */
+        // is there any response in mailbox
         while(*MAILBOX_STATUS & MAILBOX_EMPTY){asm volatile("nop");};
-        if(r == *MAILBOX_READ)
+        if(r == *MAILBOX_READ) // Request sucess: r = 0x80000000
         {
-            return mailbox[1]==MAILBOX_RESPONSE;
+            return mailbox[1]==MAILBOX_RESPONSE; // check if it is the response
         }
             
 
