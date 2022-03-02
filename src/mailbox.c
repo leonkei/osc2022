@@ -52,9 +52,9 @@ int mailbox_call(volatile unsigned int* mailbox,unsigned char ch){
     while(1) {
         // is there any response in mailbox
         while(*MAILBOX_STATUS & MAILBOX_EMPTY){asm volatile("nop");};
-        if(r == *MAILBOX_READ) // Request sucess: r = 0x80000000
+        if(r == *MAILBOX_READ) 
         {
-            return mailbox[1]==MAILBOX_RESPONSE; // check if it is the response
+            return mailbox[1]==MAILBOX_RESPONSE; // check if it is the response, if failed: 0x80000001
         }
             
 
@@ -62,6 +62,8 @@ int mailbox_call(volatile unsigned int* mailbox,unsigned char ch){
     return 0;
 
 }
+
+//board revision number: identify what model of pi it is.
 void get_board_revision(){
   //unsigned int mailbox[7];
     volatile unsigned int __attribute__((aligned(16))) mailbox[7];
@@ -86,6 +88,18 @@ void get_board_revision(){
     }
     
 }
+
+/*Get ARM memory
+Tag: 0x00010005
+Request:
+Length: 0
+Response:
+Length: 8
+Value:
+u32: base address in bytes
+u32: size in bytes
+Future formats may specify multiple base+size combinations.*/
+
 void get_ARM_memory(){
     volatile unsigned int __attribute__((aligned(16))) mailbox[8];
     mailbox[0] = 8 * 4; // buffer size in bytes
